@@ -1,4 +1,4 @@
-#Wave Detect - Signal Processing & Detection 
+# Wave Detect - Signal Processing & Detection 
 
 Advanced correlation-based detection system for identifying embedded signals in noisy environments. Implements matched filtering techniques with adaptive thresholds and real-time performance analysis.
 
