@@ -33,10 +33,6 @@ def signal_analyzer():
     insert_start = int(insertion_point * sample_rate)
     insert_end = insert_start + len(reference_pattern)
     composite_signal[insert_start:insert_end] += reference_pattern
-    
-    print(f"Pattern embedded at t = {insertion_point:.2f}s")
-    
-    # Cross-correlation analysis
     xcorr_result = np.correlate(composite_signal, reference_pattern, mode='full')
     
     # Peak detection
@@ -48,34 +44,6 @@ def signal_analyzer():
     
     # Performance metrics
     location_error = abs(estimated_location - insertion_point)
-    
-    print(f"ANALYSIS RESULTS:")
-    print(f"   Actual location:     {insertion_point:.3f}s")
-    print(f"   Estimated location:  {estimated_location:.3f}s")
-    print(f"   Timing error:        {location_error*1000:.1f} ms")
-    
-    # Visualization framework
-    fig, (plot1, plot2) = plt.subplots(2, 1, figsize=(12, 8))
-    
-    # Primary signal plot
-    plot1.plot(time_vector, composite_signal, 'b-', alpha=0.7, linewidth=0.5)
-    plot1.axvline(insertion_point, color='green', linestyle='--', linewidth=2, label=f'Actual: {insertion_point:.2f}s')
-    plot1.axvline(estimated_location, color='red', linestyle='-', linewidth=2, label=f'Estimated: {estimated_location:.2f}s')
-    plot1.set_title('Composite Signal Analysis')
-    plot1.set_xlabel('Time (s)')
-    plot1.set_ylabel('Amplitude')
-    plot1.legend()
-    plot1.grid(True, alpha=0.3)
-    
-    # Correlation analysis plot
-    plot2.plot(xcorr_time, xcorr_result, 'purple', linewidth=1)
-    plot2.plot(estimated_location, xcorr_result[max_index], 'ro', markersize=8, label='Peak Detection')
-    plot2.set_title('Cross-Correlation Analysis')
-    plot2.set_xlabel('Time Offset (s)')
-    plot2.set_ylabel('Correlation Magnitude')
-    plot2.legend()
-    plot2.grid(True, alpha=0.3)
-    
     plt.tight_layout()
     plt.show()
     
@@ -86,10 +54,8 @@ def signal_analyzer():
         print("GOOD performance! Error < 200ms")
     else:
         print("Performance requires optimization")
-    
     return insertion_point, estimated_location, location_error
 
 if __name__ == "__main__":
     actual_pos, detected_pos, error = signal_analyzer()
     print(f"\nSignal analysis complete!")
-    print(f"Final error: {error*1000:.1f} ms")
